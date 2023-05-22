@@ -5,14 +5,13 @@ function sendResponse($responseCode,$messageCode,$language,$outparameters = arra
     http_response_code($responseCode);
     $message = getmessage($messageCode, $language);
     $messageArray = array(
-            "messagecode" => $messageCode,
+            "messageCode" => $messageCode,
             "message" => $message);
 
    $responseArray = $messageArray+ $outparameters;
    echo json_encode($responseArray );
    return;
 }
-
 
 
 ?>
