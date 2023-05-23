@@ -6,6 +6,7 @@ header("Access-Control-Allow-Methods:  POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+
 include_once '../objects/company.php';
 include_once '../objects/token.php';
 
@@ -15,42 +16,44 @@ if ($requestmethod == "OPTIONS")
     return;
 }
 
-
 $database = new Database();
 $db = $database->getConnection();
 
 
 $data = json_decode(file_get_contents("php://input"));
-if ($data==null || empty($data->companyId) )
+if ($data == null || empty($data->companyId) || empty($data->ocrInfo) )
 {
-    
     sendResponse(400, 1, 0);
     return;
-   
 }
 
+
+
+$companyupdateStatus=true;
 
 $company = new Company();
-$company->setKeyColumn("companyId");
+$company->setKeyColumn("companyid");
 $company->setKeyValue($data->companyId);
-$stmt = $company->read_single();
+$companyexists = $company->read_record();
 
-if ($stmt->rowCount() > 0) {
+if ($companyexists)
+{
+    $company->ocrInfo = $data->ocrInfo;
+    $companyupdateStatus  = $company->update();
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $dataArray = array(
-        "companyData" => json_decode( $row["companyData"]),
-        "ocrInfo" => $row["ocrInfo"],
-    );
-        
-    sendResponse(200, 0, 0, $dataArray ); // company found
-    
-} else {
-  
-    sendResponse(404, 10, 0, $companyData );  // company not found
-
- 
+    if ($companyupdateStatus)
+    {
+        sendResponse(200, 0, 0);
+    }
+    else
+    {
+        sendResponse(501, 2, 0);
+    }
 }
+else
+{
+    sendResponse(404, 10, 0, $companyData );  // company not found
+} 
 
 
+?>

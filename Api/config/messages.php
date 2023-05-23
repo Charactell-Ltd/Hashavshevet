@@ -8,6 +8,8 @@ function getMessage($code,$language)
       $engMessages = array (
         0   => "OK",
         1 => "Missing parameter/s",
+        2 => "update failed",
+        10 => "Company not found",
 
     );
     $hebMessages = array (

@@ -10,6 +10,7 @@ class Company extends TableObject
     public $companyId;
     public $lastUpdate;
     public $companyData;
+    public $ocrInfo;
   
        
     public function __construct()

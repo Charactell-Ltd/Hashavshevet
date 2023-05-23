@@ -7,7 +7,7 @@ class CompaniesUpdate extends TableObject
 {
     public $recordId;
     public $companyId;
-    public $updateTime;
+    public $updateTime1;
     public $companyData;
     public $updateType;
 

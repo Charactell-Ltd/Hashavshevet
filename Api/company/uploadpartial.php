@@ -39,25 +39,9 @@ $company->setKeyColumn("companyid");
 $company->setKeyValue($data->companyId);
 $companyexists = $company->read_record();
 
-if ($companyexists)
+if (!$companyexists)
 {
-    $company->companyData = $companyData;
-    $company->lastUpdate = $data->updateTime;
-    $companyupdateStatus  = $company->update();
-}
-else
-{
-    $newCompany = true;
-    $company->companyId = $data->companyId;
-    $company->companyData = $companyData;
-    $company->lastUpdate = $data->updateTime;
-    $companyupdateStatus  = $company->create();
-  
-} 
-
-if (!$companyupdateStatus)
-{
-    sendResponse(501, 2, 0);
+    sendResponse(404, 10, 0, $companyData );  // company not found
     return;
 }
 
@@ -66,7 +50,7 @@ $companiesUpdate = new CompaniesUpdate();
 $companiesUpdate->companyId = $data->companyId;
 $companiesUpdate->updateTime1 = $data->updateTime;
 $companiesUpdate->companyData = $companyData;   
-$companiesUpdate->updateType =1; // full update
+$companiesUpdate->updateType =2 ; // partial update
 $companiesUpdateStatus = $companiesUpdate->create();
 
 
