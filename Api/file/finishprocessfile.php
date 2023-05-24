@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 include_once '../objects/company.php';
-include_once '../objects/Companiesupdate.php';
+include_once '../objects/file.php';
 include_once '../objects/token.php';
 
 $requestmethod = trim($_SERVER["REQUEST_METHOD"]);
@@ -17,22 +17,17 @@ if ($requestmethod == "OPTIONS")
     return;
 }
 
-$database = new Database();
-$db = $database->getConnection();
+// $database = new Database();
+// $db = $database->getConnection();
 
 
 $data = json_decode(file_get_contents("php://input"));
-if ($data == null || empty($data->companyId) || empty($data->updateTime) || empty($data->companyData))
+if ($data == null || empty($data->companyId) || empty($data->fileId) || empty($data->processorId))
 {
     sendResponse(400, 1, 0);
     return;
 }
 
-// convert json object to string 
-$companyData = json_encode($data->companyData);
-
-$companyupdateStatus=true;
-$newCompany = false;
 
 $company = new Company();
 $company->setKeyColumn("companyid");
@@ -45,22 +40,50 @@ if (!$companyexists)
     return;
 }
 
+$file = new File();
+$file->setKeyColumn("fileid");
+$file->setKeyValue($data->fileId);
 
-$companiesUpdate = new CompaniesUpdate();
-$companiesUpdate->companyId = $data->companyId;
-$companiesUpdate->updateTime1 = $data->updateTime;
-$companiesUpdate->companyData = $companyData;   
-$companiesUpdate->updateType =2 ; // partial update
-$companiesUpdateStatus = $companiesUpdate->create();
+$stmt = $file->read_single();
+
+if ($stmt->rowCount() == 0) {
+    sendResponse(404, 11, 0 );  // file not found
+}
 
 
-if ($companyupdateStatus)
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$status = $row["status"];
+$processorId = $row["processorId"];
+
+if ($status == 1 && $processorId != $data->processorId)
 {
+    sendResponse(501, 12, 0); // file is already in process by another processor
+    return;
+}
+if ($status > 1)
+{
+    sendResponse(501, 13, 0); // file is already processed
+    return;
+}
+
+
+$file->status = 2; // processing finished
+$file->processFinishTime = date("Y-m-d H:i:s");
+$fileUpdated = $file->update();
+
+
+if ($fileUpdated)
+{
+
+
+
    sendResponse(200, 0, 0);
 }
 else
 {
    sendResponse(501, 2, 0);
 }
+
 
 ?>

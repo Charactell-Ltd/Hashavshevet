@@ -15,10 +15,11 @@ class File extends TableObject
     public $status;
     public $fileContent;
     public $fileType;
+    public $fileName;
 
     public function __construct()
     {
         parent::__construct();
-        $this->table_name = "files";
+        $this->table_name = "Files";
     }
 }

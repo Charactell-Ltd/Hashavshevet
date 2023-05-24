@@ -23,8 +23,10 @@ $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 if ($data==null || empty($data->companyId) )
 {
+    
     sendResponse(400, 1, 0);
     return;
+   
 }
 
 
@@ -38,8 +40,7 @@ if ($stmt->rowCount() > 0) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $dataArray = array(
-        "companyData" => json_decode( $row["companyData"]),
-        "ocrInfo" => $row["ocrInfo"],
+        "updateTime" =>  $row["lastUpdate"]
     );
         
     sendResponse(200, 0, 0, $dataArray ); // company found
@@ -49,5 +50,5 @@ if ($stmt->rowCount() > 0) {
     sendResponse(404, 10, 0 );  // company not found
  
 }
-?>
+
 

@@ -150,6 +150,13 @@ abstract class TableObject
     //     $this->filterColumn = $column;
     //     $this->filterValue = $value;
     // }
+
+
+    public function setSortColumn($column)
+    {
+        $this->sortColumn = $column;
+    }
+
     public function setFilter($column, $value)
     {
         $this->filterColumns[$column] = $value;

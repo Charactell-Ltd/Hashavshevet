@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 include_once '../objects/company.php';
-include_once '../objects/Companiesupdate.php';
+include_once '../objects/file.php';
 include_once '../objects/token.php';
 
 $requestmethod = trim($_SERVER["REQUEST_METHOD"]);
@@ -17,22 +17,17 @@ if ($requestmethod == "OPTIONS")
     return;
 }
 
-$database = new Database();
-$db = $database->getConnection();
+// $database = new Database();
+// $db = $database->getConnection();
 
 
 $data = json_decode(file_get_contents("php://input"));
-if ($data == null || empty($data->companyId) || empty($data->updateTime) || empty($data->companyData))
+if ($data == null || empty($data->companyId) || empty($data->fileContent) || empty($data->fileType))
 {
     sendResponse(400, 1, 0);
     return;
 }
 
-// convert json object to string 
-$companyData = json_encode($data->companyData);
-
-$companyupdateStatus=true;
-$newCompany = false;
 
 $company = new Company();
 $company->setKeyColumn("companyid");
@@ -46,17 +41,22 @@ if (!$companyexists)
 }
 
 
-$companiesUpdate = new CompaniesUpdate();
-$companiesUpdate->companyId = $data->companyId;
-$companiesUpdate->updateTime1 = $data->updateTime;
-$companiesUpdate->companyData = $companyData;   
-$companiesUpdate->updateType =2 ; // partial update
-$companiesUpdateStatus = $companiesUpdate->create();
+$file = new File();
+
+$file->companyId = $data->companyId;
+$file->fileContent = $data->fileContent;
+$file->fileType = $data->fileType;
+$file->fileName = $data->fileName;
+$file->uploadTime = date("Y-m-d H:i:s");
+$file->instanceId = 0;
+$file->status = 0;
+$file->numberOfDocuments = 0;
+$fileCreated = $file->create();
 
 
-if ($companyupdateStatus)
+if ($fileCreated)
 {
-   sendResponse(200, 0, 0);
+   sendResponse(201, 0, 0);
 }
 else
 {
