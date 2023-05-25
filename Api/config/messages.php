@@ -1,7 +1,5 @@
 <?php
 
-
-
 function getMessage($code,$language)
 {
 

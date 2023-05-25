@@ -3,7 +3,7 @@ class Database{
  
     // specify your own database credentials
     private $host = "invoicecloud.cj4eil25ixxg.eu-west-1.rds.amazonaws.com";
-    private $db_name = "hashavshevetdev";
+    private $db_name = "hashavshevet";
     private $username = "admin";
     private $password = "Inv!cloud12";
     public $conn;
