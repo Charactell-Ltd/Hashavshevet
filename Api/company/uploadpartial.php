@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 include_once '../objects/company.php';
-include_once '../objects/Companiesupdate.php';
+include_once '../objects/companiesupdate.php';
 include_once '../objects/token.php';
 
 $requestmethod = trim($_SERVER["REQUEST_METHOD"]);

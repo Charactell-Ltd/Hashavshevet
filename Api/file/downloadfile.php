@@ -45,6 +45,7 @@ $stmt = $file->read_single();
 
 if ($stmt->rowCount() == 0) {
     sendResponse(404, 11, 0 );  // file not found
+    return;
 }
 
 
@@ -69,7 +70,5 @@ $dataArray = array(
 );
 
 sendResponse(200, 0, 0, $dataArray ); // file found
- 
-
 
 ?>
