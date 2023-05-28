@@ -23,16 +23,14 @@ class token
     public $tokenid;
     public $tokenMessage;
 
-  //  public $user;
-   // public $cpacode;
-  //  public $vatnumber;
+
     public $email;
     public $userid;
     public $accountid;
     public $integratorid;
     public $projectid;
     public $expirationtime;
-//    public $language;
+
 
     public function __construct()
     {
