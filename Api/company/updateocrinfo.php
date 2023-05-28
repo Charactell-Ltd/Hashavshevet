@@ -52,7 +52,7 @@ if ($companyexists)
 }
 else
 {
-    sendResponse(404, 10, 0, $companyData );  // company not found
+    sendResponse(404, 210, 0, $companyData );  // company not found
 } 
 
 

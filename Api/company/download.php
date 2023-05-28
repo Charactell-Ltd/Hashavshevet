@@ -46,7 +46,7 @@ if ($stmt->rowCount() > 0) {
     
 } else {
   
-    sendResponse(404, 10, 0 );  // company not found
+    sendResponse(404, 210, 0 );  // company not found
  
 }
 ?>
