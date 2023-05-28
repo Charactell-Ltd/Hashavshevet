@@ -36,7 +36,7 @@ $companyexists = $company->read_record();
 
 if (!$companyexists)
 {
-    sendResponse(404, 10, 0 );  // company not found
+    sendResponse(404, 210, 0 );  // company not found
     return;
 }
 
@@ -47,7 +47,7 @@ $file->setKeyValue($data->fileId);
 $stmt = $file->read_single();
 
 if ($stmt->rowCount() == 0) {
-    sendResponse(404, 11, 0 );  // file not found
+    sendResponse(404, 211, 0 );  // file not found
 }
 
 
@@ -58,12 +58,12 @@ $processorId = $row["processorId"];
 
 if ($status == 1 && $processorId != $data->processorId)
 {
-    sendResponse(501, 12, 0); // file is already in process by another processor
+    sendResponse(501, 212, 0); // file is already in process by another processor
     return;
 }
 if ($status > 1)
 {
-    sendResponse(501, 13, 0); // file is already processed
+    sendResponse(501, 213, 0); // file is already processed
     return;
 }
 
