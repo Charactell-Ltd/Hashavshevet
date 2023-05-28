@@ -46,7 +46,10 @@ $file = new File();
 $file->companyId = $data->companyId;
 $file->fileContent = $data->fileContent;
 $file->fileType = $data->fileType;
-$file->fileName = $data->fileName;
+if (!empty($data->fileName))
+{
+   $file->fileName = $data->fileName;
+}
 $file->uploadTime = date("Y-m-d H:i:s");
 $file->instanceId = 0;
 $file->status = 0;
