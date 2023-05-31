@@ -6,7 +6,7 @@ header("Access-Control-Allow-Methods:  POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../objects/company.php';
+include_once '../objects/user.php';
 include_once '../objects/token.php';
 
 $requestmethod = trim($_SERVER["REQUEST_METHOD"]);
@@ -16,38 +16,31 @@ if ($requestmethod == "OPTIONS")
 }
 
 
-$database = new Database();
-$db = $database->getConnection();
-
-
 $data = json_decode(file_get_contents("php://input"));
-if ($data==null || empty($data->adminpass) )
+if ($data==null || empty($data->adminPass) )
 {
     sendResponse(400, 1, 0);
     return;
 }
 
 
-$company = new Company();
-$company->setKeyColumn("companyId");
-$company->setKeyValue($data->companyId);
-$stmt = $company->read_single();
+$user = new User();
+$user->email = $data->email;
+$user->accountId = $data->accountId;
+$user->fullName = $data->fullName;
+$user->create();
 
-if ($stmt->rowCount() > 0) {
+$user->userId = $user->newKeyValue;
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+$token = new Token();
+$token->generateSiteToken($user);
 
-    $dataArray = array(
-        "companyData" => json_decode( $row["companyData"]),
-        "ocrInfo" => $row["ocrInfo"],
-    );
+$user->token = $token->token;
+$user->tokenExpiration = $token->expirationtime;
+$user->update();
+
         
-    sendResponse(200, 0, 0, $dataArray ); // company found
+sendResponse(200, 0, 0 ); 
     
-} else {
-  
-    sendResponse(404, 10, 0 );  // company not found
- 
-}
 ?>
 

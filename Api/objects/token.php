@@ -40,8 +40,9 @@ class token
     public function generateSiteToken($user)
     {
 
-        $expirationtime = time() + (24 * 60 * 60);    //  1 day from now
-      //  $expirationtime = time() + ( 30);    //  30 seconds
+        $expirationtime = "2099-31-12 23:59:00";    //  no expiration
+      // $expirationtime = time() + (24 * 60 * 60);    //  1 day from now
+     
     
         $tokenArr = array(
             "iss" => $this->iss,
@@ -52,8 +53,6 @@ class token
                 "email" => $user->email,
                 "userid" => $user->userid,
                 "accountid" => $user->accountid,
-                "integratorid" => $user->integratorid,
-                "projectid" => $user->projectid,
                 "expirationtime" => $expirationtime,
             ),
         );

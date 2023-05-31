@@ -57,9 +57,15 @@ $file->numberOfDocuments = 0;
 $fileCreated = $file->create();
 
 
+$file->fileId =  $file->newKeyValue;
+
 if ($fileCreated)
 {
-   sendResponse(201, 0, 0);
+    $dataArray = array(
+        "fileId" =>  $file->newKeyValue,
+       
+    );
+   sendResponse(201, 0, 0, $dataArray);
 }
 else
 {
