@@ -16,6 +16,8 @@ function getMessage($code,$language)
         214 => "File is not in process status or being processed by another processor",
         215 => "No Files to process",
 
+        300 => "hashavshevet call failed",
+
     );
     $hebMessages = array (
       0   => "OK"
