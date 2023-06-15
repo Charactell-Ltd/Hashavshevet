@@ -18,9 +18,6 @@ class hashapi
     {
         
 
-       // $moduleDataJson = json_encode($moduleData);
-    //   $moduledata = json_decode($moduleDataJson, true);
-
        $signature = md5(json_encode($moduleData) . "F9682B75DF384984B3819E22358134AF");
 
        $body = array(
@@ -48,15 +45,13 @@ class hashapi
         catch (Exception $e)
         {
             $response = $e->getMessage();
-           // $json = $this->extractReponse($response);
-          //  $data = json_encode($json, true);
+       
+            $messageArray = array(
+                "hashavshevetError" => $response,
+            );
+           
 
-            // $dataArray = array(
-            //     "error" => json_decode( $data["err"], true),
-              
-            // );
-
-            sendResponse(500,300 , 0);
+            sendResponse(500,300 , 0,$messageArray);
             return false;  
         }
 
