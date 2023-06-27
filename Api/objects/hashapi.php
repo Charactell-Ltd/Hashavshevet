@@ -16,10 +16,13 @@ class hashapi
 
     public function movein($station, $netPassportID, $company, $moduleData)   
     {
-        
+      //  $token =      "AREQBLAMKUKXLVJZPUOUPWKSIULXIWNSIULXOVPSIULXOVPSIUPXKVMZCULX";
+        $token = "F9682B75DF384984B3819E22358134AF";  // ct2
+     //  $token = "150BF00F361A64B54B11EAB33037FAB7";  // CTOrg
 
-       $signature = md5(json_encode($moduleData) . "F9682B75DF384984B3819E22358134AF");
-
+       $json = json_encode($moduleData, JSON_UNESCAPED_UNICODE);
+       $signature = md5($json . $token);
+  
        $body = array(
             "station" => $station,
             "plugin" => "movein",
